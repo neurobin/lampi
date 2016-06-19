@@ -24,7 +24,7 @@ lampi [-v, -h, -i, -dr, -s, -nu, -n]
 Option | Explanation
 ------ | -----------
 `-i`, `--install` | install lamp
-`-nu`, `--no-update` ] | do not run apt-get update
+`-nu`, `--no-update` | do not run apt-get update
 `-s`, `--ssl` | enable SSL 
 `-n`, `--name` | server name (default localhost)
 `-dr`, `--doc-root` | arbitrary document root (default /var/www/html)
