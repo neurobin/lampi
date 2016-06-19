@@ -50,8 +50,13 @@ for op in "$@";do
             ;;
         -dr|--doc-root)
             shift
-            dr="${1/%\//}"
-            shift
+            if [[ "$1" != "" ]]; then
+                dr="${1/%\//}"
+                shift
+            else
+                echo "E: Arg missing for -dr option"
+                exit 1
+            fi
             ;;
         -s|--ssl)
             ssl=true
