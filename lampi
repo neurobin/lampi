@@ -240,19 +240,32 @@ if ! grep -s -e "^127.0.0.1[[:blank:]]*$localhost[[:blank:]]*$" /etc/hosts >/dev
 fi
 
 #enable mods
-a2enmod rewrite > /dev/null 2>&1 || printf "\tE: Failed to enable mod_rewrite\n"
-if $ssl; then a2enmod ssl> /dev/null 2>&1 || printf "\tE: Failed to enable mod_ssl\n";fi
+a2enmod rewrite &&
+printf "\tEnabled mod_rewrite\n" || 
+printf "\tE: Failed to enable mod_rewrite\n"
+if $ssl; then 
+    a2enmod ssl &&
+    printf "\tEnabled mod_ssl\n" ||
+    printf "\tE: Failed to enable mod_ssl\n"
+fi
 
 #enable sites
-a2ensite "$localhost"> /dev/null 2>&1 || printf "\tE: Failed to enable $localhost\n"
-if $ssl; then a2ensite "$localhost"-ssl> /dev/null 2>&1 || printf "\tE: Failed to enable $localhost-ssl\n";fi
+a2ensite "$localhost" &&
+printf "\tEnabled $localhost\n" ||
+printf "\tE: Failed to enable $localhost\n"
+if $ssl; then 
+    a2ensite "$localhost"-ssl &&
+    printf "\tEnabled $localhost-ssl\n" ||
+    printf "\tE: Failed to enable $localhost-ssl\n"
+fi
 
 endm="
+****** Successfully reloaded apache2 ******
 ******* Visit Site *******
-    http://$localhost/info.php"
+    http://$localhost/info.php
+    "
 if $ssl; then 
-    endm="${endm}
-    https://$localhost/info.php
+    endm="${endm}https://$localhost/info.php
     "
 fi
 
