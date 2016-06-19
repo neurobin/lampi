@@ -228,8 +228,6 @@ insert_docroot_property(){
 insert_docroot_property "$dsn"
 insert_docroot_property "$ds_ssln"
 
-
-
 if ! grep -s -e "^127.0.0.1[[:blank:]]*$localhost[[:blank:]]*$" /etc/hosts >/dev/null 2>&1; then
     sed -i.bak -e "1 a 127.0.0.1\t$localhost" /etc/hosts &&
     printf "Added $localhost to /etc/hosts" ||
@@ -243,16 +241,17 @@ if $ssl; then a2enmod ssl> /dev/null 2>&1 || printf "\tE: Failed to enable mod_s
 #enable sites
 a2ensite "$localhost"> /dev/null 2>&1 || printf "\tE: Failed to enable $localhost\n"
 if $ssl; then a2ensite "$localhost"-ssl> /dev/null 2>&1 || printf "\tE: Failed to enable $localhost-ssl\n";fi
-#restart the apache2 service
-service apache2 restart && {
 
 endm="
 ******* Visit Site *******
-http://$localhost/info.php"
+    http://$localhost/info.php"
 if $ssl; then 
-endm="${endm}
-https://$localhost/info.php
-"
+    endm="${endm}
+    https://$localhost/info.php
+    "
 fi
-echo "$endm"
-}
+
+#restart the apache2 service
+service apache2 restart &&
+echo "$endm" ||
+echo "E: Failed to restart apache2"
