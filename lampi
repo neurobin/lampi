@@ -204,7 +204,7 @@ copy_default_config(){
                -e "s=^\([[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*\)[^[:blank:]]\+\([[:blank:]]*>[[:blank:]]*\)$=\1$dr\2="\
                -e "s=^\([[:blank:]]*<[[:blank:]]*VirtualHost[[:blank:]]*\)[^:]*\(:[^>]*>[[:blank:]]*\)$=\1 127.0.0.1\2="\
                "$1" > "$2" &&
-    printf "\tcopied $1 --> $2 with requred modifications\n" ||
+    printf "\tcopied $1 --> $2 with required modifications\n" ||
     printf "\tE: Failed to copy $1 --> $2\n"
 }
 
