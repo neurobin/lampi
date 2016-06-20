@@ -1,5 +1,7 @@
 The **lampi** script can install the required packages automatically and setup LAMP for you. It can also be used to create custom sites (both http and https) on *localhost*.
 
+**The installation is only for Ubuntu 14.04 and 16.04, other functionality (like setting up custom sites) is available for other versions as well as other Linux flavors**
+
 #Install:
 **lampi** is a single script. You can install it or run it from anywhere by specifying its path. This is how you can install it:
 
