@@ -154,12 +154,15 @@ if $install; then
 
     #phpmyadmin
     phpmd='phpmyadmin apache2-utils'
+    if [ "$rv" = '16' ];then
+        phpmd="$phpmd php-gettext php-mbstring"
+    fi
     for i in $phpmd;do
         list+=("$i")
     done
 
     for app in ${list[@]};do
-        echo "Installing: $app"
+        echo "###### Installing: $app #######"
         apt-get -y install $app || 
         apt-get -y install --reinstall $app || {
         echo "W: Failed to install: $app"
