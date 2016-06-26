@@ -20,7 +20,7 @@ sudo cp lampi /usr/local/bin
 #Options:
 
 ```sh
-lampi [-v, -h, -i, -dr, -s, -nu, -n]
+lampi [-i, -nu, -s, -so, -n, -dr, -v, -h]
 ```
 
 Option | Explanation
@@ -28,6 +28,7 @@ Option | Explanation
 `-i`, `--install` | install lamp
 `-nu`, `--no-update` | do not run apt-get update
 `-s`, `--ssl` | enable SSL 
+`-so`, `--ssl-only` | enable SSL (https) site only 
 `-n`, `--name` | server name (default localhost)
 `-dr`, `--doc-root` | arbitrary document root (default /var/www/html)
 `-v`, `--version` | show version info

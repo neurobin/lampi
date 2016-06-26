@@ -16,7 +16,7 @@ help="
 ############# Lamp stack installer for Ubuntu ###############
 #############################################################
 # Usage:
-#   lampi [-v, -h, -dr, -s]
+#   lampi [-i, -nu, -s, -so, -n, -dr, -v, -h]
 #
 # Run simply lampi -i to install the lamp stack
 # with default configs
@@ -24,7 +24,8 @@ help="
 # Options:
 #   [ -i, --install ]       : install lamp
 #   [ -nu, --no-update ]    : do not run apt-get update
-#   [ -s, --ssl ]           : enable SSL    
+#   [ -s, --ssl ]           : enable SSL   
+#   [ -so, --ssl-only ]     : enable SSL (https) site only 
 #   [ -n, --name ]          : server name (default localhost)
 #   [ -dr, --doc-root ]     : arbitrary document root  
 #   [ -v, --version ]       : show version info
@@ -33,6 +34,7 @@ help="
 "
 dr=''
 ssl=false
+ssl_only=false
 no_update=false
 install=false
 localhost=localhost
@@ -60,6 +62,11 @@ for op in "$@";do
             ;;
         -s|--ssl)
             ssl=true
+            shift
+            ;;
+        -so|--ssl-only)
+            ssl=true
+            ssl_only=true
             shift
             ;;
         -nu|--no-update)
@@ -95,6 +102,7 @@ opts="
 DocumentRoot    : $dr
 ServerName      : $localhost
 SSL             : $ssl
+SSL only        : $ssl_only
 Install         : $install
 NoUpdate        : $no_update
 "
@@ -253,9 +261,11 @@ if $ssl; then
 fi
 
 #enable sites
-a2ensite "$localhost" &&
-printf "\tEnabled $localhost\n" ||
-printf "\tE: Failed to enable $localhost\n"
+if ! $ssl_only; then
+    a2ensite "$localhost" &&
+    printf "\tEnabled $localhost\n" ||
+    printf "\tE: Failed to enable $localhost\n"
+fi
 if $ssl; then 
     a2ensite "$localhost"-ssl &&
     printf "\tEnabled $localhost-ssl\n" ||
