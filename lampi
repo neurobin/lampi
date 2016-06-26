@@ -3,7 +3,7 @@ p_name=lampi
 p_author='Md Jahidul Hamid'
 p_source='https://github.com/neurobin/lampi'
 p_bugt="$p_source/issues"
-p_version=0.0.4
+p_version=0.0.5
 ver_info="
 Name        : $p_name
 Version     : $p_version
