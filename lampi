@@ -3,7 +3,7 @@ p_name=lampi
 p_author='Md Jahidul Hamid'
 p_source='https://github.com/neurobin/lampi'
 p_bugt="$p_source/issues"
-p_version=0.0.7
+p_version=0.0.8
 ver_info="
 Name        : $p_name
 Version     : $p_version
@@ -27,7 +27,7 @@ help="
 #   [ -u, --uninstall ]     : uninstall lamp
 #   [ -nu, --no-update ]    : do not run apt-get update
 #   [ -s, --ssl ]           : enable SSL   
-#   [ -so, --ssl-only ]     : enable SSL (https) site only 
+#   [ -so, --ssl-only ]     : configure for https site only 
 #   [ -n, --name ]          : server name (default localhost)
 #   [ -dr, --doc-root ]     : arbitrary document root
 #   [ -v, --version ]       : show version info
@@ -256,8 +256,12 @@ copy_default_config(){
     printf "\tE: Failed to copy $1 --> $2\n"
 }
 
-copy_default_config "$ds" "$dsn"
-copy_default_config "$ds_ssl" "$ds_ssln"
+if ! $ssl_only; then
+    copy_default_config "$ds" "$dsn"
+fi
+if $ssl; then
+    copy_default_config "$ds_ssl" "$ds_ssln"
+fi
 
 insert_server_property(){
     if ! grep -s -e "^\([[:blank:]]*$1\).*$" "$2" >/dev/null 2>&1; then
@@ -268,8 +272,12 @@ insert_server_property(){
         printf "\t$1 exists in $2 (skipped)\n"
     fi
 }
-insert_server_property ServerName "$dsn"
-insert_server_property ServerName "$ds_ssln"
+if ! $ssl_only; then
+    insert_server_property ServerName "$dsn"
+fi
+if $ssl; then
+    insert_server_property ServerName "$ds_ssln"
+fi
 
 insert_docroot_property(){
     if ! grep -s -e "^[[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*[^[:blank:]]\+[[:blank:]]*>[[:blank:]]*$" "$1" >/dev/null 2>&1; then
@@ -290,8 +298,12 @@ insert_docroot_property(){
     fi
 }
 
-insert_docroot_property "$dsn"
-insert_docroot_property "$ds_ssln"
+if ! $ssl_only; then
+    insert_docroot_property "$dsn"
+fi
+if $ssl; then
+    insert_docroot_property "$ds_ssln"
+fi
 
 if ! grep -s -e "^127.0.0.1[[:blank:]]*$localhost[[:blank:]]*$" /etc/hosts >/dev/null 2>&1; then
     sed -i.bak -e "1 a 127.0.0.1\t$localhost" /etc/hosts &&
