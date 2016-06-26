@@ -30,7 +30,7 @@ http://example.com.local and https://example.com.local
 
 **For https site you will have to add exception to your browser for the SSL certificate**
 
-If you haven't installed the LAMP yet, the just add a `-i` flag to the above command:
+If you haven't installed the LAMP yet, then just add a `-i` flag to the above command:
 
 ```sh
 sudo lampi -i -s -n example.com.local -dr ~/example
@@ -39,12 +39,13 @@ sudo lampi -i -s -n example.com.local -dr ~/example
 #Options:
 
 ```sh
-lampi [-i, -nu, -s, -so, -n, -dr, -v, -h]
+lampi [-i, -ri -nu, -s, -so, -n, -dr, -v, -h]
 ```
 
 Option | Explanation
 ------ | -----------
 `-i`, `--install` | install lamp
+`-ri`, `--reinstall` | reinstall lamp
 `-nu`, `--no-update` | do not run apt-get update
 `-s`, `--ssl` | enable SSL 
 `-so`, `--ssl-only` | enable SSL (https) site only 

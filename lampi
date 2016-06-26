@@ -12,17 +12,18 @@ Source      : $p_source
 Bug tracker : $p_bugt
 "
 help="
-######################### lampi #############################
-############# Lamp stack installer for Ubuntu ###############
-#############################################################
+######################### lampi ##############################
+############# Lamp stack installer for Ubuntu ################
+##############################################################
 # Usage:
-#   lampi [-i, -u, -nu, -s, -so, -n, -dr, -v, -h]
+#   lampi [-i, -ri, -u, -nu, -s, -so, -n, -dr, -v, -h]
 #
 # Run simply lampi -i to install the lamp stack
 # with default configs
 #
 # Options:
 #   [ -i, --install ]       : install lamp
+#   [ -ri, --reinstall ]    : reinstall lamp
 #   [ -u, --uninstall ]     : uninstall lamp
 #   [ -nu, --no-update ]    : do not run apt-get update
 #   [ -s, --ssl ]           : enable SSL   
