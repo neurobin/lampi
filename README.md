@@ -34,3 +34,19 @@ Option | Explanation
 `-v`, `--version` | show version info
  `-h`, `--help` | show help 
 
+
+#Examples:
+
+After you have installed the LAMP stack with `sudo lampi -i` command:
+
+To create a site named **example.com.local** in *~/example*, run the following:
+
+```sh
+sudo lampi -s -n example.com.local -dr ~/example
+```
+The above command will create two sites (*http* and *https* version) in *~/example* (*/home/user/example*) directory. The sites will be accessible through the URLs:
+http://example.com.local and https://example.com.local
+
+**For https site you will have to add exception to your browser for the SSL certificate**
+
+
