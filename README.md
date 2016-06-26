@@ -48,7 +48,7 @@ Option | Explanation
 `-ri`, `--reinstall` | reinstall lamp
 `-nu`, `--no-update` | do not run apt-get update
 `-s`, `--ssl` | enable SSL 
-`-so`, `--ssl-only` | enable SSL (https) site only 
+`-so`, `--ssl-only` | configure for https site only 
 `-n`, `--name` | server name (default localhost)
 `-dr`, `--doc-root` | arbitrary document root (default /var/www/html)
 `-v`, `--version` | show version info
