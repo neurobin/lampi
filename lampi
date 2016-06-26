@@ -219,7 +219,7 @@ fi
 if $uninstall;then echo "Removed LAMP installation (custom sites are not removed)."; exit 0;fi
 
 #create info.php
-[ ! -f "$dr"/info.php ] && echo "$tphp" > "$dr"/info.php && printf "\tinfo.php created\n" || printf "\tinfo.php exists (skipped)\n"
+[ ! -f "$dr"/info.php ] && echo "$tphp" > "$dr"/info.php && printf "\n\tinfo.php created\n" || printf "\n\tinfo.php exists (skipped)\n"
 chown $user:$user "$dr"/info.php
 
 aconf=/etc/apache2/apache2.conf
@@ -227,10 +227,10 @@ pdconf=/etc/phpmyadmin/apache.conf
 pdincl="Include $pdconf"
 if ! grep -s -e "$pdincl" "$aconf" >/dev/null 2>&1; then
     sed -i.bak "$ a $pdincl" "$aconf" &&
-    printf "\t apache2 conf modified to include phpmyadmin\n" ||
-    printf "\tE: failed to modify apache2 conf for phpmyadmin\n"
+    printf "\n\t apache2 conf modified to include phpmyadmin\n" ||
+    printf "\n\tE: failed to modify apache2 conf for phpmyadmin\n"
 else
-    printf "\tphpmyadmin is already added in apache2 conf (skipped)\n"
+    printf "\n\tphpmyadmin is already added in apache2 conf (skipped)\n"
 fi
 
 dire_opts="\n\t\tAllowOverride All\n\t\tOptions Indexes FollowSymLinks MultiViews\n\t\tOrder allow,deny\n\t\tRequire all granted\n\t\tAllow from all\n\t\t\n\t"
@@ -252,8 +252,8 @@ copy_default_config(){
                -e "s=^\([[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*\)[^[:blank:]]\+\([[:blank:]]*>[[:blank:]]*\)$=\1$dr\2="\
                -e "s=^\([[:blank:]]*<[[:blank:]]*VirtualHost[[:blank:]]*\)[^:]*\(:[^>]*>[[:blank:]]*\)$=\1 127.0.0.1\2="\
                "$1" > "$2" &&
-    printf "\tcopied $1 --> $2 with required modifications\n" ||
-    printf "\tE: Failed to copy $1 --> $2\n"
+    printf "\n\tcopied $1 --> $2 with required modifications\n" ||
+    printf "\n\tE: Failed to copy $1 --> $2\n"
 }
 
 if ! $ssl_only; then
@@ -266,10 +266,10 @@ fi
 insert_server_property(){
     if ! grep -s -e "^\([[:blank:]]*$1\).*$" "$2" >/dev/null 2>&1; then
         sed -i.bak -e "s=^[[:blank:]]*<[[:blank:]]*VirtualHost[[:blank:]]*.*>[[:blank:]]*$=&\n\tServerName $localhost=" "$2" &&
-        printf "\tSuccessfully inserted $1 to $2\n" ||
-        printf "\tE: Failed to insert $1 to $2\n"
+        printf "\n\tSuccessfully inserted $1 to $2\n" ||
+        printf "\n\tE: Failed to insert $1 to $2\n"
     else
-        printf "\t$1 exists in $2 (skipped)\n"
+        printf "\n\t$1 exists in $2 (skipped)\n"
     fi
 }
 if ! $ssl_only; then
@@ -282,19 +282,19 @@ fi
 insert_docroot_property(){
     if ! grep -s -e "^[[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*[^[:blank:]]\+[[:blank:]]*>[[:blank:]]*$" "$1" >/dev/null 2>&1; then
         sed -i.bak -e "s=^\([[:blank:]]*\)DocumentRoot.*$=&\n$dire=" "$1" &&
-        printf "\tSuccessfully inserted DocumentRoot in $1\n" ||
-        printf "\tE: Failed to insert DocumentRoot in $1\n"
+        printf "\n\tSuccessfully inserted DocumentRoot in $1\n" ||
+        printf "\n\tE: Failed to insert DocumentRoot in $1\n"
     else
         cat "${1-x}" > "${1-x}.bak" 2>&1 &&
-        printf "\tBack up: ${1-x} succeded" ||
-        printf "\tE: Back up: ${1-x} failed"
+        printf "\n\tBack up: ${1-x} succeded\n" ||
+        printf "\n\tE: Back up: ${1-x} failed\n"
         echo "$(awk '
         BEGIN       {p=1}
         /^[[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*[^[:blank:]]+[[:blank:]]*>[[:blank:]]*/   {print;print "'"$dire_opts_ssl"'";p=0}
         /[^#]*<\/Directory/     {p=1}
         p' "${1-x}")" > "${1-x}" &&
-        printf "\tSuccessfully edited ${1-x}" ||
-        printf "\tE: Failed to edit ${1-x}"
+        printf "\n\tSuccessfully edited ${1-x}\n" ||
+        printf "\n\tE: Failed to edit ${1-x}\n"
     fi
 }
 
@@ -307,30 +307,30 @@ fi
 
 if ! grep -s -e "^127.0.0.1[[:blank:]]*$localhost[[:blank:]]*$" /etc/hosts >/dev/null 2>&1; then
     sed -i.bak -e "1 a 127.0.0.1\t$localhost" /etc/hosts &&
-    printf "Added $localhost to /etc/hosts" ||
-    printf "E: Failed to add $localhost to /etc/hosts"
+    printf "\n\tAdded $localhost to /etc/hosts\n" ||
+    printf "\n\tE: Failed to add $localhost to /etc/hosts\n"
 fi
 
 #enable mods
 a2enmod rewrite &&
-printf "\tEnabled mod_rewrite\n" || 
-printf "\tE: Failed to enable mod_rewrite\n"
+printf "\n\tEnabled mod_rewrite\n" || 
+printf "\n\tE: Failed to enable mod_rewrite\n"
 if $ssl; then 
     a2enmod ssl &&
-    printf "\tEnabled mod_ssl\n" ||
-    printf "\tE: Failed to enable mod_ssl\n"
+    printf "\n\tEnabled mod_ssl\n" ||
+    printf "\n\tE: Failed to enable mod_ssl\n"
 fi
 
 #enable sites
 if ! $ssl_only; then
     a2ensite "$localhost" &&
-    printf "\tEnabled $localhost\n" ||
-    printf "\tE: Failed to enable $localhost\n"
+    printf "\n\tEnabled $localhost\n" ||
+    printf "\n\tE: Failed to enable $localhost\n"
 fi
 if $ssl; then 
     a2ensite "$localhost"-ssl &&
-    printf "\tEnabled $localhost-ssl\n" ||
-    printf "\tE: Failed to enable $localhost-ssl\n"
+    printf "\n\tEnabled $localhost-ssl\n" ||
+    printf "\n\tE: Failed to enable $localhost-ssl\n"
 fi
 
 endm="
@@ -349,4 +349,4 @@ fi
 #restart the apache2 service
 service apache2 restart &&
 echo "$endm" ||
-echo "E: Failed to restart apache2"
+echo "\n\tE: Failed to restart apache2\n"
