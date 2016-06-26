@@ -216,7 +216,7 @@ if $install || $uninstall; then
 fi
 
 #if uninstall exit
-if $uninstall;then echo "Successfully removed LAMP installation (custom sites are not removed)."; exit 0;fi
+if $uninstall;then echo "Removed LAMP installation (custom sites are not removed)."; exit 0;fi
 
 #create info.php
 [ ! -f "$dr"/info.php ] && echo "$tphp" > "$dr"/info.php && printf "\tinfo.php created\n" || printf "\tinfo.php exists (skipped)\n"
