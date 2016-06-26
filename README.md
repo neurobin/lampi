@@ -55,4 +55,7 @@ Option | Explanation
 `-v`, `--version` | show version info
  `-h`, `--help` | show help 
 
+#Notes:
 
+1. All options to **lampi** are optional. If any option is not passed, it will be defaulted to some predefined value.
+2. The `-u` flag uses `apt-get purge` i.e it will remove LAMP as well as its configuration.
