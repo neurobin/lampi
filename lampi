@@ -135,8 +135,12 @@ if [ $EUID -ne 0 ]; then
     printf "\tSorry! Exiting\n\n"
     exit 1
 fi
-
+user=www-data
+if [ ! -z "$SUDO_USER" ]; then
+    user="$SUDO_USER"
+fi
 mkdir -p "$dr"
+chown $user:$user "$dr"
 
 #extract dist version
 rel=(`lsb_release -r | grep -o '[0-9]\+'`)
