@@ -39,13 +39,14 @@ sudo lampi -i -s -n example.com.local -dr ~/example
 #Options:
 
 ```sh
-lampi [-i, -ri -nu, -s, -so, -n, -dr, -v, -h]
+lampi [-i, -ri, -u, -nu, -s, -so, -n, -dr, -v, -h]
 ```
 
 Option | Explanation
 ------ | -----------
 `-i`, `--install` | install lamp
 `-ri`, `--reinstall` | reinstall lamp
+`-u`, `--uninstall`  | uninstall lamp
 `-nu`, `--no-update` | do not run apt-get update
 `-s`, `--ssl` | enable SSL 
 `-so`, `--ssl-only` | configure for https site only 
