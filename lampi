@@ -152,9 +152,9 @@ if $install; then
 
     #php
     if [ "$rv" = '14' ];then
-        php='php5 libapache2-mod-php5 php5-mcrypt php5-cgi php5-cli php5-common php5-curl php5-gd'
+        php='php5 libapache2-mod-php5 mcrypt php5-mcrypt php5-cgi php5-cli php5-common php5-curl php5-gd'
     elif [ "$rv" = '16' ];then
-        php='php libapache2-mod-php php-mcrypt php-cgi php-cli php-common php-curl php-gd'
+        php='php libapache2-mod-php mcrypt php-mcrypt php-cgi php-cli php-common php-curl php-gd'
     fi
     for i in $php;do
         list+=("$i")
@@ -171,14 +171,14 @@ if $install; then
 
     for app in ${list[@]};do
         echo "###### Installing: $app #######"
-        apt-get -y install $app || 
-        apt-get -y install --reinstall $app || {
+        apt-get --force-yes -y install --reinstall $app || {
         echo "W: Failed to install: $app"
         [ "$app" = apache2 ] && exit 1
         [ "$app" = php ] && exit 1
         [ "$app" = php5 ] && exit 1
         }
     done
+    apt-get autoremove
 fi
 
 #create info.php
@@ -195,7 +195,8 @@ else
     printf "\tphpmyadmin is already added in apache2 conf (skipped)\n"
 fi
 
-dire="\t<Directory $dr>\n\t\tAllowOverride All\n\t\tOptions Indexes FollowSymLinks MultiViews\n\t\tOrder allow,deny\n\t\tRequire all granted\n\t\tAllow from all\n\t\t\n\t</Directory>\n"
+dire_opts="\n\t\tAllowOverride All\n\t\tOptions Indexes FollowSymLinks MultiViews\n\t\tOrder allow,deny\n\t\tRequire all granted\n\t\tAllow from all\n\t\t\n\t"
+dire="\t<Directory $dr>$dire_opts</Directory>\n"
 
 #custom sites
 ds='/etc/apache2/sites-available/000-default.conf'
@@ -237,7 +238,12 @@ insert_docroot_property(){
         printf "\tSuccessfully inserted DocumentRoot in $1\n" ||
         printf "\tE: Failed to insert DocumentRoot in $1\n"
     else
-        printf "\tDocumentRoot exists in $1 (skipped)\n"
+        if ! grep -s -A4 -e "^[[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*[^[:blank:]]\+[[:blank:]]*>[[:blank:]]*$" "$1" |
+                                                                        grep -s -e "AllowOverride All" >/dev/null 2>&1; then
+            sed -i.bak -e "s/^[[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*[^[:blank:]]\+[[:blank:]]*>[[:blank:]]*$/&\n$dire_opts/" "$1" &&
+            printf "\tSuccessfully changed Directory in $1\n" ||
+            printf "\tE: Failed to change Directory in $1\n"
+        fi
     fi
 }
 
@@ -275,8 +281,11 @@ fi
 endm="
 ****** Successfully reloaded apache2 ******
 ******* Visit Site *******
-    http://$localhost/info.php
     "
+if ! $ssl_only; then
+    endm="${endm}http://$localhost/info.php
+    "
+fi
 if $ssl; then 
     endm="${endm}https://$localhost/info.php
     "
