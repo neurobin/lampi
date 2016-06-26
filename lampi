@@ -196,6 +196,7 @@ else
 fi
 
 dire_opts="\n\t\tAllowOverride All\n\t\tOptions Indexes FollowSymLinks MultiViews\n\t\tOrder allow,deny\n\t\tRequire all granted\n\t\tAllow from all\n\t\t\n\t"
+dire_opts_ssl="\n\t\t\tAllowOverride All\n\t\t\tOptions Indexes FollowSymLinks MultiViews\n\t\t\tOrder allow,deny\n\t\t\tRequire all granted\n\t\t\tAllow from all\n\t\t\tSSLOptions +StdEnvVars\n\t\t\t\n\t\t"
 dire="\t<Directory $dr>$dire_opts</Directory>\n"
 
 #custom sites
@@ -238,12 +239,16 @@ insert_docroot_property(){
         printf "\tSuccessfully inserted DocumentRoot in $1\n" ||
         printf "\tE: Failed to insert DocumentRoot in $1\n"
     else
-        if ! grep -s -A4 -e "^[[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*[^[:blank:]]\+[[:blank:]]*>[[:blank:]]*$" "$1" |
-                                                                        grep -s -e "AllowOverride All" >/dev/null 2>&1; then
-            sed -i.bak -e "s/^[[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*[^[:blank:]]\+[[:blank:]]*>[[:blank:]]*$/&\n$dire_opts/" "$1" &&
-            printf "\tSuccessfully changed Directory in $1\n" ||
-            printf "\tE: Failed to change Directory in $1\n"
-        fi
+        cat "${1-x}" > "${1-x}.bak" 2>&1 &&
+        printf "\tBack up: ${1-x} succeded" ||
+        printf "\tE: Back up: ${1-x} failed"
+        echo "$(awk '
+        BEGIN       {p=1}
+        /^[[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*[^[:blank:]]+[[:blank:]]*>[[:blank:]]*/   {print;print "'"$dire_opts_ssl"'";p=0}
+        /[^#]*<\/Directory/     {p=1}
+        p' "${1-x}")" > "${1-x}" &&
+        printf "\tSuccessfully edited ${1-x}" ||
+        printf "\tE: Failed to edit ${1-x}"
     fi
 }
 
