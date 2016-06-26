@@ -44,9 +44,9 @@ lampi [-i, -ri, -u, -nu, -s, -so, -n, -dr, -v, -h]
 
 Option | Explanation
 ------ | -----------
-`-i`, `--install` | install lamp
-`-ri`, `--reinstall` | reinstall lamp
-`-u`, `--uninstall`  | uninstall lamp
+`-i`, `--install` | install LAMP
+`-ri`, `--reinstall` | reinstall LAMP
+`-u`, `--uninstall`  | uninstall LAMP
 `-nu`, `--no-update` | do not run apt-get update
 `-s`, `--ssl` | enable SSL 
 `-so`, `--ssl-only` | configure for https site only 

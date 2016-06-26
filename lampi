@@ -18,13 +18,13 @@ help="
 # Usage:
 #   lampi [-i, -ri, -u, -nu, -s, -so, -n, -dr, -v, -h]
 #
-# Run simply lampi -i to install the lamp stack
+# Run simply lampi -i to install the LAMP stack
 # with default configs
 #
 # Options:
-#   [ -i, --install ]       : install lamp
-#   [ -ri, --reinstall ]    : reinstall lamp
-#   [ -u, --uninstall ]     : uninstall lamp
+#   [ -i, --install ]       : install LAMP
+#   [ -ri, --reinstall ]    : reinstall LAMP
+#   [ -u, --uninstall ]     : uninstall LAMP
 #   [ -nu, --no-update ]    : do not run apt-get update
 #   [ -s, --ssl ]           : enable SSL   
 #   [ -so, --ssl-only ]     : configure for https site only 
