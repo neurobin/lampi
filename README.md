@@ -6,9 +6,10 @@ The **lampi** script can install the required packages automatically and setup L
 **lampi** is a single script. You can install it or run it from anywhere by specifying its path. This is how you can install it:
 
 ```sh
-sudo chmod 755 lampi
-sudo cp lampi /usr/local/bin
+sudo chmod +x install.sh
+sudo ./install.sh
 ```
+i.e just give the *install.sh* file execution permission and run it, or you can manually copy the **lampi** script to a standard bin (e.g */usr/local/bin*) directory and assign execution permission to it.
 
 #Usage:
 
@@ -19,8 +20,6 @@ sudo cp lampi /usr/local/bin
 
 #Examples:
 
-After you have installed the LAMP stack with `sudo lampi -i` command:
-
 To create a site named **example.com.local** in *~/example*, run the following:
 
 ```sh
@@ -30,6 +29,12 @@ The above command will create a site (with both *http* and *https*) in *~/exampl
 http://example.com.local and https://example.com.local
 
 **For https site you will have to add exception to your browser for the SSL certificate**
+
+If you haven't installed the LAMP yet, the just add a `-i` flag to the above command:
+
+```sh
+sudo lampi -i -s -n example.com.local -dr ~/example
+```
 
 #Options:
 

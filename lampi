@@ -16,18 +16,19 @@ help="
 ############# Lamp stack installer for Ubuntu ###############
 #############################################################
 # Usage:
-#   lampi [-i, -nu, -s, -so, -n, -dr, -v, -h]
+#   lampi [-i, -u, -nu, -s, -so, -n, -dr, -v, -h]
 #
 # Run simply lampi -i to install the lamp stack
 # with default configs
 #
 # Options:
 #   [ -i, --install ]       : install lamp
+#   [ -u, --uninstall ]     : uninstall lamp
 #   [ -nu, --no-update ]    : do not run apt-get update
 #   [ -s, --ssl ]           : enable SSL   
 #   [ -so, --ssl-only ]     : enable SSL (https) site only 
 #   [ -n, --name ]          : server name (default localhost)
-#   [ -dr, --doc-root ]     : arbitrary document root  
+#   [ -dr, --doc-root ]     : arbitrary document root
 #   [ -v, --version ]       : show version info
 #   [ -h, --help ]          : show help 
 ##############################################################
@@ -38,6 +39,8 @@ ssl_only=false
 no_update=false
 install=false
 localhost=localhost
+uninstall=false
+reinstall=false
 for op in "$@";do
     case "$op" in
         -v|--version)
@@ -75,6 +78,20 @@ for op in "$@";do
             ;;
         -i|--install)
             install=true
+            reinstall=false
+            uninstall=false
+            shift
+            ;;
+        -ri|--reinstall)
+            install=true
+            reinstall=true
+            uninstall=false
+            shift
+            ;;
+        -u|--uninstall)
+            install=false    # install is a block of code handling install/uninstall both
+            reinstall=false
+            uninstall=true
             shift
             ;;
         -n|--name)
@@ -104,6 +121,8 @@ ServerName      : $localhost
 SSL             : $ssl
 SSL only        : $ssl_only
 Install         : $install
+Uninstall       : $uninstall
+Reinstall       : $reinstall
 NoUpdate        : $no_update
 "
 echo "$opts"
@@ -128,58 +147,71 @@ phpinfo();
 ?>
 '
 
-if $install; then
+if $install || $uninstall; then
 
     #update
-    if ! $no_update;then apt-get update;fi
+    if ! $no_update && ! $uninstall;then apt-get update;fi
 
-    #apache2 and mysql
+    #apache2
     list=(
     'apache2'
-    'mysql-server'
-    'mysql-client'
     )
-
-    #mysql
-    if [ "$rv" = '14' ];then
-        mysql="php5-mysql"
-    elif [ "$rv" = '16' ];then
-        mysql="php-mysql"
-    fi
-    for i in $mysql;do
-        list+=("$i")
-    done
-
+    
     #php
+    php='mcrypt'
     if [ "$rv" = '14' ];then
-        php='php5 libapache2-mod-php5 mcrypt php5-mcrypt php5-cgi php5-cli php5-common php5-curl php5-gd'
+        php="$php php5 libapache2-mod-php5 php5-mcrypt php5-cgi php5-cli php5-common php5-curl php5-gd"
     elif [ "$rv" = '16' ];then
-        php='php libapache2-mod-php mcrypt php-mcrypt php-cgi php-cli php-common php-curl php-gd'
+        php="$php php libapache2-mod-php php-mcrypt php-cgi php-cli php-common php-curl php-gd"
     fi
-    for i in $php;do
-        list+=("$i")
-    done
+    
+    list+=("$php")
+
+    # mysql
+    mysql='mysql-server mysql-client'
+    if [ "$rv" = '14' ];then
+        mysql="$mysql php5-mysql"
+    elif [ "$rv" = '16' ];then
+        mysql="$mysql php-mysql"
+    fi
+    list+=("$mysql")
 
     #phpmyadmin
     phpmd='phpmyadmin apache2-utils'
     if [ "$rv" = '16' ];then
         phpmd="$phpmd php-gettext php-mbstring"
     fi
-    for i in $phpmd;do
-        list+=("$i")
-    done
+    list+=("$phpmd")
 
-    for app in ${list[@]};do
-        echo "###### Installing: $app #######"
-        apt-get --force-yes -y install --reinstall $app || {
-        echo "W: Failed to install: $app"
-        [ "$app" = apache2 ] && exit 1
-        [ "$app" = php ] && exit 1
-        [ "$app" = php5 ] && exit 1
-        }
+    for app in "${list[@]}";do
+        if ! $uninstall; then
+            echo "###### Installing: $app #######"
+            { if ! $reinstall; then apt-get -y install $app;else apt-get --force-yes -y install --reinstall $app;fi; } || 
+            {
+            echo "W: Failed to install: $app"
+            [ "$app" = apache2 ] && exit 1
+            }
+         else
+            echo "###### Removing: $app #######"
+            apt-get  -y purge $app
+         fi
     done
     apt-get autoremove
+    
+    if ! $uninstall; then
+        if [ "$rv" = '14' ]; then
+            php5enmod mcrypt
+        elif [ "$rv" = '16' ]; then
+            phpenmod mcrypt
+            phpenmod mbstring
+        fi
+    
+    fi
+        
 fi
+
+#if uninstall exit
+if $uninstall;then echo "Successfully removed LAMP installation (custom sites are not removed)."; exit 0;fi
 
 #create info.php
 [ ! -f "$dr"/info.php ] && echo "$tphp" > "$dr"/info.php && printf "\tinfo.php created\n" || printf "\tinfo.php exists (skipped)\n"
