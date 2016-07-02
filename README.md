@@ -59,3 +59,8 @@ Option | Explanation
 
 1. All options to **lampi** are optional. If any option is not passed, it will be defaulted to some predefined value.
 2. The `-u` flag uses `apt-get purge` i.e it will remove LAMP as well as its configuration.
+
+#Tested On:
+
+1. Xubuntu 14.04.4 LTS
+2. Xubuntu 16.04 LTS
