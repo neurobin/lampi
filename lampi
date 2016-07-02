@@ -206,7 +206,7 @@ if $install || $uninstall; then
     if ! $uninstall; then
         if (( $rv <= 15 )); then
             php5enmod mcrypt
-        elif (( $rv => 16 )); then
+        elif (( $rv >= 16 )); then
             phpenmod mcrypt
             phpenmod mbstring
         fi
@@ -242,6 +242,14 @@ ds='/etc/apache2/sites-available/000-default.conf'
 ds_ssl='/etc/apache2/sites-available/default-ssl.conf'
 dsn="$(dirname "$ds")/$localhost.conf"
 ds_ssln="$(dirname "$ds_ssl")/$localhost-ssl.conf"
+
+if [ "$ds" = "$dsn" ]; then
+    printf "$ds\m\t\tand\n$dsn\n\t\tcan not be same\nE: ServerName: $(basename "$ds") not allowed\n"
+    exit 1
+elif [ "$ds_ssl" = "$ds_ssln" ]; then
+    printf "$ds_ssl\m\t\tand\n$ds_ssln\n\t\tcan not be same\nE: ServerName: default not allowed\n"
+    exit 1
+fi
 
 export localhost
 export dr
