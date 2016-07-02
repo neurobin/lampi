@@ -355,6 +355,9 @@ if $ssl; then
 fi
 
 #restart the apache2 service
-service apache2 restart &&
+{
+service apache2 restart ||
+systemctl restart apache2
+} &&
 echo "$endm" ||
 echo "\n\tE: Failed to restart apache2\n"
