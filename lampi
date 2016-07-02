@@ -3,7 +3,7 @@ p_name=lampi
 p_author='Md Jahidul Hamid'
 p_source='https://github.com/neurobin/lampi'
 p_bugt="$p_source/issues"
-p_version=0.0.8
+p_version=0.1.0
 ver_info="
 Name        : $p_name
 Version     : $p_version
@@ -166,7 +166,7 @@ if $install || $uninstall; then
     php='mcrypt'
     if (( $rv <= 15 ));then
         php="$php php5 libapache2-mod-php5 php5-mcrypt php5-cgi php5-cli php5-common php5-curl php5-gd"
-    elif (( $rv => 16 ));then
+    elif (( $rv >= 16 ));then
         php="$php php libapache2-mod-php php-mcrypt php-cgi php-cli php-common php-curl php-gd"
     fi
     
@@ -176,14 +176,14 @@ if $install || $uninstall; then
     mysql='mysql-server mysql-client'
     if (( $rv <= 15 ));then
         mysql="$mysql php5-mysql"
-    elif (( $rv => 16 ));then
+    elif (( $rv >= 16 ));then
         mysql="$mysql php-mysql"
     fi
     list+=("$mysql")
 
     #phpmyadmin
     phpmd='phpmyadmin apache2-utils'
-    if (( $rv => 16 ));then
+    if (( $rv >= 16 ));then
         phpmd="$phpmd php-gettext php-mbstring"
     fi
     list+=("$phpmd")
