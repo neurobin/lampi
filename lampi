@@ -264,7 +264,7 @@ else
         fi
             
     fi
-
+ 
     #if uninstall exit
     if $uninstall;then echo "Removed LAMP installation (custom sites are not removed)."; exit 0;fi
 
