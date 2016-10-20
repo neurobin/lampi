@@ -83,7 +83,7 @@ for op in "$@";do
             no_update=true
             shift
             ;;
-        -nu|--no-update)
+        -npa|--no-php-myadmin)
             npa=true
             shift
             ;;
