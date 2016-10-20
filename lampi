@@ -3,7 +3,7 @@ p_name=lampi
 p_author='Md Jahidul Hamid'
 p_source='https://github.com/neurobin/lampi'
 p_bugt="$p_source/issues"
-p_version=0.1.1
+p_version=0.1.2
 ver_info="
 Name        : $p_name
 Version     : $p_version
@@ -173,6 +173,8 @@ endm="
 ****** Successfully reloaded apache2 ******
 "
 
+aconf=/etc/apache2/apache2.conf
+
 if [ -n "$remove" ]; then
     a2dissite $remove
     remove_file=/etc/apache2/sites-available/"$remove.conf"
@@ -230,7 +232,18 @@ else
                 echo "###### Removing: $app #######"
                 apt-get  -y purge $app
              fi
+             
         done
+        pdconf=/etc/phpmyadmin/apache.conf
+        pdincl="Include $pdconf"
+        if ! grep -s -e "$pdincl" "$aconf" >/dev/null 2>&1; then
+            sed -i.bak "$ a $pdincl" "$aconf" &&
+            printf "\n\t apache2 conf modified to include phpmyadmin\n" ||
+            printf "\n\tE: failed to modify apache2 conf for phpmyadmin\n"
+        else
+            printf "\n\tphpmyadmin is already added in apache2 conf (skipped)\n"
+        fi
+
         apt-get autoremove
         
         if ! $uninstall; then
@@ -251,17 +264,6 @@ else
     #create info.php
     [ ! -f "$dr"/info.php ] && echo "$tphp" > "$dr"/info.php && printf "\n\tinfo.php created\n" || printf "\n\tinfo.php exists (skipped)\n"
     chown $user:$user "$dr"/info.php
-
-    aconf=/etc/apache2/apache2.conf
-    pdconf=/etc/phpmyadmin/apache.conf
-    pdincl="Include $pdconf"
-    if ! grep -s -e "$pdincl" "$aconf" >/dev/null 2>&1; then
-        sed -i.bak "$ a $pdincl" "$aconf" &&
-        printf "\n\t apache2 conf modified to include phpmyadmin\n" ||
-        printf "\n\tE: failed to modify apache2 conf for phpmyadmin\n"
-    else
-        printf "\n\tphpmyadmin is already added in apache2 conf (skipped)\n"
-    fi
 
     dire_opts="\n\t\tAllowOverride All\n\t\tOptions Indexes FollowSymLinks MultiViews\n\t\tOrder allow,deny\n\t\tRequire all granted\n\t\tAllow from all\n\t\t\n\t"
     dire_opts_ssl="\n\t\t\tAllowOverride All\n\t\t\tOptions Indexes FollowSymLinks MultiViews\n\t\t\tOrder allow,deny\n\t\t\tRequire all granted\n\t\t\tAllow from all\n\t\t\tSSLOptions +StdEnvVars\n\t\t\t\n\t\t"
