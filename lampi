@@ -159,6 +159,7 @@ if [ ! -z "$SUDO_USER" ]; then
 fi
 mkdir -p "$dr"
 chown $user:$user "$dr"
+chmod 755 "$dr"
 
 #extract dist version
 rel=(`lsb_release -r | grep -o '[0-9]\+'`)
