@@ -32,6 +32,7 @@ help="
 #   [ -so, --ssl-only ]     : configure for https site only 
 #   [ -n, --name ]          : server name (default localhost)
 #   [ -dr, --doc-root ]     : arbitrary document root
+#   [ -npa, --no-php-myadmin: no php my admin
 #   [ -v, --version ]       : show version info
 #   [ -h, --help ]          : show help 
 ##############################################################
@@ -46,6 +47,7 @@ uninstall=false
 reinstall=false
 remove=
 force=false
+npa=false
 for op in "$@";do
     case "$op" in
         -v|--version)
@@ -79,6 +81,10 @@ for op in "$@";do
             ;;
         -nu|--no-update)
             no_update=true
+            shift
+            ;;
+        -nu|--no-update)
+            npa=true
             shift
             ;;
         -i|--install)
@@ -266,6 +272,10 @@ else
     [ ! -f "$dr"/info.php ] && echo "$tphp" > "$dr"/info.php && printf "\n\tinfo.php created\n" || printf "\n\tinfo.php exists (skipped)\n"
     chown $user:$user "$dr"/info.php
 
+if $npa; then
+    sed -i.bak -e 's#^[[:blank:]]*Include[[:blank:]]*/etc/phpmyadmin/apache.conf[[:blank:]]*.*##' "$aconf"
+fi
+
     dire_opts="\n\t\tAllowOverride All\n\t\tOptions Indexes FollowSymLinks MultiViews\n\t\tOrder allow,deny\n\t\tRequire all granted\n\t\tAllow from all\n\t\t\n\t"
     dire_opts_ssl="\n\t\t\tAllowOverride All\n\t\t\tOptions Indexes FollowSymLinks MultiViews\n\t\t\tOrder allow,deny\n\t\t\tRequire all granted\n\t\t\tAllow from all\n\t\t\tSSLOptions +StdEnvVars\n\t\t\t\n\t\t"
     dire="\t<Directory $dr>$dire_opts</Directory>\n"
@@ -394,3 +404,4 @@ systemctl restart apache2
 } &&
 echo "$endm" ||
 echo "\n\tE: Failed to restart apache2\n"
+
