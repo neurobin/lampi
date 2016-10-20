@@ -39,7 +39,7 @@ sudo lampi -i -s -n example.com.local -dr ~/example
 #Options:
 
 ```sh
-lampi [-i, -ri, -u, -nu, -s, -so, -n, -dr, -v, -h]
+lampi [-i, -ri, -u, -rm, -f, -nu, -s, -so, -n, -dr, -v, -h]
 ```
 
 Option | Explanation
@@ -47,6 +47,8 @@ Option | Explanation
 `-i`, `--install` | install LAMP
 `-ri`, `--reinstall` | reinstall LAMP
 `-u`, `--uninstall`  | uninstall LAMP
+`-rm`, `--remove` | remove a site
+`-f`, `--force` | force (remove directory)
 `-nu`, `--no-update` | do not run apt-get update
 `-s`, `--ssl` | enable SSL 
 `-so`, `--ssl-only` | configure for https site only 
