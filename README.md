@@ -43,7 +43,7 @@ lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nsr, -f -nu, -v, -h]
 ```
 
 Option | Alt. option | Explanation
------- | -----------
+------ | ----------- | ----------
 -n | --name                 | server name (default localhost)
 -dr | --doc-root            | arbitrary document root
 -i | --install              | install LAMP
