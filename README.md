@@ -39,23 +39,26 @@ sudo lampi -i -s -n example.com.local -dr ~/example
 #Options:
 
 ```sh
-lampi [-i, -ri, -u, -rm, -f, -nu, -s, -so, -n, -dr, -v, -h]
+lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nsr, -f -nu, -v, -h]
 ```
 
-Option | Explanation
+Option | Alt. option | Explanation
 ------ | -----------
-`-i`, `--install` | install LAMP
-`-ri`, `--reinstall` | reinstall LAMP
-`-u`, `--uninstall`  | uninstall LAMP
-`-rm`, `--remove` | remove a site
-`-f`, `--force` | force (remove directory)
-`-nu`, `--no-update` | do not run apt-get update
-`-s`, `--ssl` | enable SSL 
-`-so`, `--ssl-only` | configure for https site only 
-`-n`, `--name` | server name (default localhost)
-`-dr`, `--doc-root` | arbitrary document root (default /var/www/html)
-`-v`, `--version` | show version info
- `-h`, `--help` | show help 
+-n | --name                 | server name (default localhost)
+-dr | --doc-root            | arbitrary document root
+-i | --install              | install LAMP
+-ri | --reinstall           | reinstall LAMP
+-u | --uninstall            | uninstall LAMP
+-s | --ssl                  | enable SSL
+-rm | --remove              | remove a site
+-rmd | --remove-with-dir    | remove a site and it's directory
+-f | --force                | force
+-nu | --no-update           | do not run apt-get update
+-so | --ssl-only            | configure for https site only 
+-npa | --no-php-myadmin     | no php my admin
+-nsr | --no-server-restart  | no server restart
+-v | --version              | show version info
+-h | --help                 | show help 
 
 #Notes:
 
