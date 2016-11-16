@@ -39,7 +39,7 @@ sudo lampi -i -s -n example.com.local -dr ~/example
 #Options:
 
 ```sh
-lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nsr, -f -nu, -v, -h]
+lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nfo, -nsr, -f -nu, -v, -h]
 ```
 
 Option | Alt. option | Explanation
@@ -56,6 +56,7 @@ Option | Alt. option | Explanation
 -nu | --no-update           | do not run apt-get update
 -so | --ssl-only            | configure for https site only 
 -npa | --no-php-myadmin     | no php my admin
+-nfo | --no-info            | do not create info.php
 -nsr | --no-server-restart  | no server restart
 -v | --version              | show version info
 -h | --help                 | show help 
