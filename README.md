@@ -69,3 +69,4 @@ Option | Alt. option | Explanation
 
 1. Xubuntu 14.04.4 LTS
 2. Xubuntu 16.04 LTS
+3. Ubuntu 16.10
