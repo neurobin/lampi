@@ -44,22 +44,22 @@ lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nfo, -nsr, -f -nu, -v, -h]
 
 Option | Alt. option | Explanation
 ------ | ----------- | ----------
--n | --name                 | server name (default localhost)
--dr | --doc-root            | arbitrary document root
--i | --install              | install LAMP
--ri | --reinstall           | reinstall LAMP
--u | --uninstall            | uninstall LAMP
--s | --ssl                  | enable SSL
--rm | --remove              | remove a site
--rmd | --remove-with-dir    | remove a site and it's directory
--f | --force                | force
--nu | --no-update           | do not run apt-get update
--so | --ssl-only            | configure for https site only 
--npa | --no-php-myadmin     | no php my admin
--nfo | --no-info            | do not create info.php
--nsr | --no-server-restart  | no server restart
--v | --version              | show version info
--h | --help                 | show help 
+-n [name] | --name [name]                | server name (default localhost)
+-dr [path] | --doc-root [path]           | arbitrary document root
+-i | --install                           | install LAMP
+-ri | --reinstall                        | reinstall LAMP
+-u | --uninstall                         | uninstall LAMP
+-s | --ssl                               | enable SSL
+-rm [name] | --remove [name]             | remove a site
+-rmd [name] | --remove-with-dir [name]   | remove a site and it's directory
+-f | --force                             | force
+-nu | --no-update                        | do not run apt-get update
+-so | --ssl-only                         | configure for https site only 
+-npa | --no-php-myadmin                  | no php my admin
+-nfo | --no-info                         | do not create info.php
+-nsr | --no-server-restart               | no server restart
+-v | --version                           | show version info
+-h | --help                              | show help 
 
 #Notes:
 
