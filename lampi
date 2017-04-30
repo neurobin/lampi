@@ -336,11 +336,11 @@ else
     export dr
     export dire
     copy_default_config(){
-        if [[ "$1" = *ssl* ]]; then
-            ip='127.0.0.1'
-        else
+#        if [[ "$1" = *ssl* ]]; then
+#            ip='127.0.0.1'
+#        else
             ip='*'
-        fi
+#        fi
         sed  -e "s=^\([[:blank:]]*DocumentRoot\).*$=\1 $dr="\
                    -e "s=^\([[:blank:]]*ServerName\).*$=\1 $localhost="\
                    -e "s=^\([[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*\)[^[:blank:]]\+\([[:blank:]]*>[[:blank:]]*\)$=\1$dr\2="\
