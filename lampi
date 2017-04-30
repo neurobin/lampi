@@ -36,6 +36,7 @@ help="
 #   -npa | --no-php-myadmin     | no php my admin
 #   -nsr | --no-server-restart  | no server restart
 #   -nfo | --no-info            | do not create info.php
+#   -nip | --no-ip              | no ip, i.e use * instead of 127.0.0.1
 #   -v | --version              | show version info
 #   -h | --help                 | show help 
 ##########################################################################
@@ -54,6 +55,7 @@ rmd=false
 npa=false
 nsr=false
 nfo=false
+nip=false
 for op in "$@";do
     case "$op" in
         -v|--version)
@@ -95,6 +97,10 @@ for op in "$@";do
             ;;
         -nsr|--no-server-restart)
             nsr=true
+            shift
+            ;;
+        -nip|--no-ip)
+            nip=true
             shift
             ;;
         -i|--install)
@@ -175,6 +181,7 @@ Uninstall       : $uninstall
 Reinstall       : $reinstall
 NoUpdate        : $no_update
 NoInfo          : $nfo
+NoIP            : $nip
 "
 #echo "$opts"
 
@@ -336,11 +343,11 @@ else
     export dr
     export dire
     copy_default_config(){
-#        if [[ "$1" = *ssl* ]]; then
-#            ip='127.0.0.1'
-#        else
+        if ! $nip; then
+            ip='127.0.0.1'
+        else
             ip='*'
-#        fi
+        fi
         sed  -e "s=^\([[:blank:]]*DocumentRoot\).*$=\1 $dr="\
                    -e "s=^\([[:blank:]]*ServerName\).*$=\1 $localhost="\
                    -e "s=^\([[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*\)[^[:blank:]]\+\([[:blank:]]*>[[:blank:]]*\)$=\1$dr\2="\
