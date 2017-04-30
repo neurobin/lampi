@@ -75,6 +75,7 @@ Option | Alt. option | Explanation
 -npa | --no-php-myadmin                  | no php my admin
 -nfo | --no-info                         | do not create info.php
 -nsr | --no-server-restart               | no server restart
+-nip | --no-ip                           | no ip, i.e use * instead of 127.0.0.1
 -v | --version                           | show version info
 -h | --help                              | show help 
 
