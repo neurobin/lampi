@@ -16,7 +16,7 @@ help="
 ################### LAMP stack installer for Ubuntu ######################
 ##########################################################################
 # Usage:
-#   lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nfo, -nsr, -f -nu, -v, -h]
+#   lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nfo, -nsr, -nip, -f -nu, -v, -h]
 #
 # Run simply lampi -i to install the LAMP stack
 # with default configs

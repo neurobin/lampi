@@ -56,7 +56,7 @@ The above will install LAMP stack and create a website named `mydomain.com` in *
 # Options:
 
 ```sh
-lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nfo, -nsr, -f -nu, -v, -h]
+lampi [-n, -dr, -i, -ri, -u, -s, -so, -rm, -rmd, -nfo, -nsr, -nip, -f -nu, -v, -h]
 ```
 
 Option | Alt. option | Explanation
