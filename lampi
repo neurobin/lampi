@@ -3,7 +3,7 @@ p_name=lampi
 p_author='Md Jahidul Hamid'
 p_source='https://github.com/neurobin/lampi'
 p_bugt="$p_source/issues"
-p_version=0.1.9
+p_version=0.2.0
 ver_info="
 Name        : $p_name
 Version     : $p_version
@@ -336,10 +336,15 @@ else
     export dr
     export dire
     copy_default_config(){
+        if [[ "$1" = *ssl* ]]; then
+            ip='127.0.0.1'
+        else
+            ip='*'
+        fi
         sed  -e "s=^\([[:blank:]]*DocumentRoot\).*$=\1 $dr="\
                    -e "s=^\([[:blank:]]*ServerName\).*$=\1 $localhost="\
                    -e "s=^\([[:blank:]]*<[[:blank:]]*Directory[[:blank:]]*\)[^[:blank:]]\+\([[:blank:]]*>[[:blank:]]*\)$=\1$dr\2="\
-                   -e "s=^\([[:blank:]]*<[[:blank:]]*VirtualHost[[:blank:]]*\)[^:]*\(:[^>]*>[[:blank:]]*\)$=\1 127.0.0.1\2="\
+                   -e "s=^\([[:blank:]]*<[[:blank:]]*VirtualHost[[:blank:]]*\)[^:]*\(:[^>]*>[[:blank:]]*\)$=\1 $ip\2="\
                    "$1" > "$2" &&
         printf "\n\tcopied $1 --> $2 with required modifications\n" ||
         printf "\n\tE: Failed to copy $1 --> $2\n"
